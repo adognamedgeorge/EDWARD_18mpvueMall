@@ -1,13 +1,8 @@
 <template>
   <div @click="clickHandle">
-
-    <div class="userinfo" @click="bindViewTap">
-      <img class="userinfo-avatar" v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" background-size="cover" />
-      <img class="userinfo-avatar" src="/static/images/user.png" background-size="cover" />
-
-      <div class="userinfo-nickname">
-        <card :text="userInfo.nickName"></card>
-      </div>
+    <div>
+      <home-search></home-search>
+      <home-head></home-head>
     </div>
 
     <div class="usermotto">
@@ -34,8 +29,8 @@
 </template>
 
 <script>
-import card from '@/components/card'
-
+import homeSearch from './components/search'
+import homeHead from './components/head'
 export default {
   data () {
     return {
@@ -46,33 +41,46 @@ export default {
       }
     }
   },
-
   components: {
-    card
+    homeSearch,
+    homeHead
   },
-
   methods: {
-    bindViewTap () {
-      const url = '../logs/main'
-      if (mpvuePlatform === 'wx') {
-        mpvue.switchTab({ url })
-      } else {
-        mpvue.navigateTo({ url })
-      }
-    },
-    clickHandle (ev) {
-      console.log('clickHandle:', ev)
-      // throw {message: 'custom test'}
+    // bindViewTap () {
+    //   const url = '../logs/main'
+    //   if (mpvuePlatform === 'wx') {
+    //     mpvue.switchTab({ url })
+    //   } else {
+    //     mpvue.navigateTo({ url })
+    //   }
+    // },
+    // clickHandle (ev) {
+    //   console.log('clickHandle:', ev)
+    //   // throw {message: 'custom test'}
+    // },
+    getList () {
+      let Flyio = require('flyio')
+      let fly = Flyio()
+      fly.get('https://easy-mock.com/mock/5ca466b55eeed03805bf4949/edward/edward')
+        .then((res) => {
+          console.log(res)
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   },
 
   created () {
     // let app = getApp()
+  },
+  mounted () {
+    this.getList()
   }
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .userinfo {
   display: flex;
   flex-direction: column;
@@ -80,9 +88,9 @@ export default {
 }
 
 .userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
+  width: rpx(128);
+  height: rpx(128);
+  margin: rpx(20);
   border-radius: 50%;
 }
 
